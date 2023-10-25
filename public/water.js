@@ -14,13 +14,10 @@ document.body.appendChild(renderer.domElement)
 
 const controls = new OrbitControls(camera, renderer.domElement)
 
-const geometry = new THREE.BoxGeometry()
-const material = new THREE.MeshBasicMaterial({
-    color: 0x00ff00,
-    wireframe: true,
-})
-const cube = new THREE.Mesh(geometry, material)
-scene.add(cube)
+const geometry = new THREE.PlaneGeometry( 2, 2, 2 );
+const material = new THREE.MeshBasicMaterial( {color: 0x0e87cc, side: THREE.DoubleSide} );
+const plane = new THREE.Mesh( geometry, material );
+scene.add( plane );
 
 window.addEventListener(
     'resize',
@@ -37,19 +34,27 @@ const stats = Stats()
 document.body.appendChild(stats.dom)
 
 const gui = new GUI()
-const cubeFolder = gui.addFolder('Cube')
-cubeFolder.add(cube.scale, 'x', -5, 5)
-cubeFolder.add(cube.scale, 'y', -5, 5)
-cubeFolder.add(cube.scale, 'z', -5, 5)
-cubeFolder.open()
+const planeFolder = gui.addFolder('plane')
+planeFolder.add(plane.scale, 'x', 0, 5)
+planeFolder.add(plane.scale, 'y', 0, 5)
+planeFolder.add(plane.scale, 'z', 0, 5)
+planeFolder.open()
 const cameraFolder = gui.addFolder('Camera')
 cameraFolder.add(camera.position, 'z', 0, 10)
 cameraFolder.open()
+const a = new THREE.Vector3(0, 1, 0)
+const b = new THREE.Vector3()
+const d = a.distanceTo(b)
 
 function animate() {
     requestAnimationFrame(animate)
-    cube.rotation.x += 0.01
-    cube.rotation.y += 0.01
+    plane.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+            child.rotation.x += 0.01
+            child.rotation.y += 0.01
+            child.rotation.z += 0.01
+        }
+    })
     controls.update()
     render()
     stats.update()
