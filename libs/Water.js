@@ -6,19 +6,19 @@ class Water {
         this.cohesion = cohesion;
     }
 
-    get density {
+    get density() {
         return this.waterDensity();
     }
 
-    get surface_tension {
+    get surface_tension() {
         return this.waterSurfaceTension();
     }
     
-    get adhesion {
+    get adhesion() {
         return this.waterAdhesion();
     }
 
-    get cohesion {
+    get cohesion() {
         return this.waterCohesion();
     }
 
