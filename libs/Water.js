@@ -1,9 +1,9 @@
 class Water {
     constructor(surface_tension, adhesion, density, cohesion) {
-        this.surface_tension = 'surface_tension';
-        this.adhesion = 'adhesion';
-        this.density = 'density';
-        this.cohesion = 'cohesion';
+        this.surface_tension = surface_tension;
+        this.adhesion = adhesion;
+        this.density = density;
+        this.cohesion = cohesion;
     }
 
     waterDensity(temperature) {
