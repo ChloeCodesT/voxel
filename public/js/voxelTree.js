@@ -38,6 +38,113 @@ VoxelTree.prototype._insert = function(voxel, node) {
     }
 };
 
+// Function to get all voxels in the voxel tree
+VoxelTree.prototype.getAllVoxels = function() {
+    var voxels = [];
+    this._getAllVoxels(this.root, voxels);
+    return voxels;
+};
+
+VoxelTree.prototype._getAllVoxels = function(node, voxels) {
+    if (node !== null) {
+        voxels.push(node);
+        this._getAllVoxels(node.left, voxels);
+        this._getAllVoxels(node.right, voxels);
+    }
+};
+
+// Function to check if a voxel exists at a given position
+VoxelTree.prototype.hasVoxelAt = function(x, y, z) {
+    return this._hasVoxelAt(x, y, z, this.root);
+};
+
+VoxelTree.prototype._hasVoxelAt = function(x, y, z, node) {
+    if (node === null) {
+        return false;
+    } else if (node.x === x && node.y === y && node.z === z) {
+        return true;
+    } else if (x < node.x) {
+        return this._hasVoxelAt(x, y, z, node.left);
+    } else {
+        return this._hasVoxelAt(x, y, z, node.right);
+    }
+};
+
+// Function to move a voxel to a given position
+VoxelTree.prototype.moveVoxelTo = function(voxel, x, y, z) {
+    this._removeVoxel(voxel);
+    voxel.x = x;
+    voxel.y = y;
+    voxel.z = z;
+    this.insert(voxel);
+};
+
+// Function to remove a voxel from the voxel tree
+VoxelTree.prototype.removeVoxel = function(voxel) {
+    this._removeVoxel(voxel);
+};
+
+VoxelTree.prototype._removeVoxel = function(voxel) {
+    this.root = this._removeVoxelHelper(voxel, this.root);
+};
+
+VoxelTree.prototype._removeVoxelHelper = function(voxel, node) {
+    if (node === null) {
+        return null;
+    } else if (voxel.x < node.x) {
+        node.left = this._removeVoxelHelper(voxel, node.left);
+    } else if (voxel.x > node.x) {
+        node.right = this._removeVoxelHelper(voxel, node.right);
+    } else if (voxel.y < node.y) {
+        node.left = this._removeVoxelHelper(voxel, node.left);
+    } else if (voxel.y > node.y) {
+        node.right = this._removeVoxelHelper(voxel, node.right);
+    } else if (voxel.z < node.z) {
+        node.left = this._removeVoxelHelper(voxel, node.left);
+    } else if (voxel.z > node.z) {
+        node.right = this._removeVoxelHelper(voxel, node.right);
+    } else {
+        if (node.left === null && node.right === null) {
+            node = null;
+        } else if (node.left === null) {
+            node = node.right;
+        } else if (node.right === null) {
+            node = node.left;
+        } else {
+            var temp = this._findMinNode(node.right);
+            node.x = temp.x;
+            node.y = temp.y;
+            node.z = temp.z;
+            node.right = this._removeVoxelHelper(temp, node.right);
+        }
+    }
+    return node;
+};
+
+VoxelTree.prototype._findMinNode = function(node) {
+    while (node.left !== null) {
+        node = node.left;
+    }
+    return node;
+};
+
+// Function to get the voxel at a given position
+VoxelTree.prototype.getVoxelAt = function(x, y, z) {
+    return this._getVoxelAt(x, y, z, this.root);
+};
+
+VoxelTree.prototype._getVoxelAt = function(x, y, z, node) {
+    if (node === null) {
+        return null;
+    } else if (node.x === x && node.y === y && node.z === z) {
+        return node;
+    } else if (x < node.x) {
+        return this._getVoxelAt(x, y, z, node.left);
+    } else {
+        return this._getVoxelAt(x, y, z, node.right);
+    }
+};
+
 // Function to generate voxel meshes
 function generateVoxelMeshes(voxelTree, scene) {
     var stack = [];
