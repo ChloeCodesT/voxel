@@ -1,67 +1,51 @@
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import Stats from 'three/examples/jsm/libs/stats.module'
-import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min'
+// Create the engine
+var canvas = document.getElementById("canvas");
+var engine = new BABYLON.Engine(canvas, true);
 
-const scene = new THREE.Scene()
+// Create the scene
+var scene = new BABYLON.Scene(engine);
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100)
-camera.position.z = 2
+// Create a FreeCamera, and set its position to (x:0, y:5, z:-10)
+var camera = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0, 5, -10), scene);
 
-const renderer = new THREE.WebGLRenderer()
-renderer.setSize(window.innerWidth, window.innerHeight)
-document.body.appendChild(renderer.domElement)
+// Target the camera to scene origin
+camera.setTarget(BABYLON.Vector3.Zero());
 
-const controls = new OrbitControls(camera, renderer.domElement)
+// Attach the camera to the canvas
+camera.attachControl(canvas, false);
 
-const geometry = new THREE.PlaneGeometry( 2, 2, 2 );
-const material = new THREE.MeshBasicMaterial( {color: 0x0e87cc, side: THREE.DoubleSide} );
-const plane = new THREE.Mesh( geometry, material );
-scene.add( plane );
+// Create a light
+var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+light.intensity = 1;
 
-window.addEventListener(
-    'resize',
-    () => {
-        camera.aspect = window.innerWidth / window.innerHeight
-        camera.updateProjectionMatrix()
-        renderer.setSize(window.innerWidth, window.innerHeight)
-        render()
-    },
-    false
-)
+// Create a ground
+var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 100, height: 100}, scene);
 
-const stats = Stats()
-document.body.appendChild(stats.dom)
+// Create a material and set its texture
+var groundMaterial = new BABYLON.StandardMaterial("groundMaterial", scene);
+groundMaterial.diffuseTexture = new BABYLON.Texture("textures/ground.jpeg", scene); // Replace with your ground texture path
+ground.material = groundMaterial;
 
-const gui = new GUI()
-const planeFolder = gui.addFolder('plane')
-planeFolder.add(plane.scale, 'x', 0, 5)
-planeFolder.add(plane.scale, 'y', 0, 5)
-planeFolder.add(plane.scale, 'z', 0, 5)
-planeFolder.open()
-const cameraFolder = gui.addFolder('Camera')
-cameraFolder.add(camera.position, 'z', 0, 10)
-cameraFolder.open()
-const a = new THREE.Vector3(0, 1, 0)
-const b = new THREE.Vector3()
-const d = a.distanceTo(b)
+// Create a voxel tree
+var voxelTree = new VoxelTree();
+voxelTree.insert(new Voxel(0, 0, 0, 1, 'water'));
+voxelTree.insert(new Voxel(1, 1, 1, 1, 'water'));
+voxelTree.insert(new Voxel(-1, -1, -1, 1, 'water'));
+voxelTree.insert(new Voxel(0, 1, 0, 1, 'water'));
+voxelTree.insert(new Voxel(1, -1, 1, 1, 'water'));
+voxelTree.insert(new Voxel(-1, 1, -1, 1, 'water'));
+voxelTree.insert(new Voxel(1, 0, 1, 1, 'water'));
+voxelTree.insert(new Voxel(-1, 0, -1, 1));
+voxelTree.insert(new Voxel(0, -1, 0, 1));
+voxelTree.insert(new Voxel(2, 2, 2, 1));
+voxelTree.insert(new Voxel(-2, -2, -2, 1));
+voxelTree.insert(new Voxel(2, 2, -2, 1));
+voxelTree.insert(new Voxel(-2, -2, 2, 1));
 
-function animate() {
-    requestAnimationFrame(animate)
-    plane.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-            child.rotation.x += 0.01
-            child.rotation.y += 0.01
-            child.rotation.z += 0.01
-        }
-    })
-    controls.update()
-    render()
-    stats.update()
-}
+// Generate voxel meshes
+generateVoxelMeshes(voxelTree, scene);
 
-function render() {
-    renderer.render(scene, camera)
-}
-
-animate()
+// Render the scene
+engine.runRenderLoop(function () {
+    scene.render();
+});

@@ -1,18 +1,6 @@
 {
   "dependencies": {
-    "express": "^4.18.2",
-    "node-p5": "^1.0.4",
-    "three": "^0.157.0"
-  },
-  "name": "water",
-  "description": "3D visualization of water",
-  "version": "1.0.0",
-  "main": "water.js",
-  "devDependencies": {},
-  "scripts": {
-    "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
+    "cannon": "github:schteppe/cannon.js",
+    "express": "^4.18.2"
+  }
 }
