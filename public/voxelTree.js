@@ -49,14 +49,27 @@ function generateVoxelMeshes(voxelTree, scene) {
         var box = BABYLON.MeshBuilder.CreateBox("box", {size: voxel.size}, scene);
         box.position = new BABYLON.Vector3(voxel.x, voxel.y, voxel.z);
 
+            // Add drag-and-drop behavior to the box
+        var dragBehavior = new BABYLON.PointerDragBehavior({ dragPlaneNormal: new BABYLON.Vector3(1, 1, 1) });
+        box.addBehavior(dragBehavior);
+
         // Create a material and set its texture based on the voxel type
         var material = new BABYLON.StandardMaterial("material", scene);
         switch (voxel.type) {
             case 'water':
                 material.diffuseTexture = new BABYLON.Texture("textures/water.jpg", scene);
                 break;
-            case 'tree':
-                material.diffuseTexture = new BABYLON.Texture("textures/tree.jpeg", scene);
+            case 'wood':
+                material.diffuseTexture = new BABYLON.Texture("textures/wood.jpeg", scene);
+                break;
+            case 'stone':
+                material.diffuseTexture = new BABYLON.Texture("textures/stone.jpeg", scene);
+                break;
+            case 'dirt':
+                material.diffuseTexture = new BABYLON.Texture("textures/dirt.jpeg", scene);
+                break;
+            case 'leaf':
+                material.diffuseTexture = new BABYLON.Texture("textures/leaf.jpeg", scene);
                 break;
             // Add more cases as needed
             default:

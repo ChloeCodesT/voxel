@@ -29,35 +29,26 @@ ground.material = groundMaterial;
 // Create a voxel tree
 var voxelTree = new VoxelTree();
 
-// Insert voxels to create a random structure
-for (var i = 0; i < 100; i++) {
-  var x = Math.floor(Math.random() * 20) - 10;
-  var y = Math.floor(Math.random() * 20) - 10;
-  var z = Math.floor(Math.random() * 20) - 10;
-  voxelTree.insert(new Voxel(x, y, z, 1, 'water'));
+// Insert voxels to create a tree structure
+// Create the trunk
+for (var y = 0; y < 5; y++) {
+  voxelTree.insert(new Voxel(0, y, 0, 1, 'wood'));
 }
 
-// Insert voxels to create a random structure
-for (var i = 0; i < 100; i++) {
-    var x = Math.floor(Math.random() * 20) - 10;
-    var y = Math.floor(Math.random() * 20) - 10;
-    var z = Math.floor(Math.random() * 20) - 10;
-    voxelTree.insert(new Voxel(x, y, z, 1, 'tree'));
+// Create the leaves
+for (var x = -2; x <= 2; x++) {
+  for (var z = -2; z <= 2; z++) {
+    for (var y = 5; y < 8; y++) {
+      if (Math.abs(x) + Math.abs(z) < 3) {
+        voxelTree.insert(new Voxel(x, y, z, 1, 'leaf'));
+      }
+    }
   }
-
-  // Insert voxels to create a random structure
-for (var i = 0; i < 100; i++) {
-    var x = Math.floor(Math.random() * 20) - 10;
-    var y = Math.floor(Math.random() * 20) - 10;
-    var z = Math.floor(Math.random() * 20) - 10;
-    voxelTree.insert(new Voxel(x, y, z, 1));
-  }
+}
 
 // Generate voxel meshes
 generateVoxelMeshes(voxelTree, scene);
 
-// Generate voxel meshes
-generateVoxelMeshes(voxelTree, scene);
 // voxelTree.insert(new Voxel(0, 0, 0, 1, 'water'));
 // voxelTree.insert(new Voxel(1, 1, 1, 1, 'water'));
 // voxelTree.insert(new Voxel(-1, -1, -1, 1, 'water'));
