@@ -28,19 +28,49 @@ ground.material = groundMaterial;
 
 // Create a voxel tree
 var voxelTree = new VoxelTree();
-voxelTree.insert(new Voxel(0, 0, 0, 1, 'water'));
-voxelTree.insert(new Voxel(1, 1, 1, 1, 'water'));
-voxelTree.insert(new Voxel(-1, -1, -1, 1, 'water'));
-voxelTree.insert(new Voxel(0, 1, 0, 1, 'water'));
-voxelTree.insert(new Voxel(1, -1, 1, 1, 'water'));
-voxelTree.insert(new Voxel(-1, 1, -1, 1, 'water'));
-voxelTree.insert(new Voxel(1, 0, 1, 1, 'water'));
-voxelTree.insert(new Voxel(-1, 0, -1, 1));
-voxelTree.insert(new Voxel(0, -1, 0, 1));
-voxelTree.insert(new Voxel(2, 2, 2, 1));
-voxelTree.insert(new Voxel(-2, -2, -2, 1));
-voxelTree.insert(new Voxel(2, 2, -2, 1));
-voxelTree.insert(new Voxel(-2, -2, 2, 1));
+
+// Insert voxels to create a random structure
+for (var i = 0; i < 100; i++) {
+  var x = Math.floor(Math.random() * 20) - 10;
+  var y = Math.floor(Math.random() * 20) - 10;
+  var z = Math.floor(Math.random() * 20) - 10;
+  voxelTree.insert(new Voxel(x, y, z, 1, 'water'));
+}
+
+// Insert voxels to create a random structure
+for (var i = 0; i < 100; i++) {
+    var x = Math.floor(Math.random() * 20) - 10;
+    var y = Math.floor(Math.random() * 20) - 10;
+    var z = Math.floor(Math.random() * 20) - 10;
+    voxelTree.insert(new Voxel(x, y, z, 1, 'tree'));
+  }
+
+  // Insert voxels to create a random structure
+for (var i = 0; i < 100; i++) {
+    var x = Math.floor(Math.random() * 20) - 10;
+    var y = Math.floor(Math.random() * 20) - 10;
+    var z = Math.floor(Math.random() * 20) - 10;
+    voxelTree.insert(new Voxel(x, y, z, 1));
+  }
+
+// Generate voxel meshes
+generateVoxelMeshes(voxelTree, scene);
+
+// Generate voxel meshes
+generateVoxelMeshes(voxelTree, scene);
+// voxelTree.insert(new Voxel(0, 0, 0, 1, 'water'));
+// voxelTree.insert(new Voxel(1, 1, 1, 1, 'water'));
+// voxelTree.insert(new Voxel(-1, -1, -1, 1, 'water'));
+// voxelTree.insert(new Voxel(0, 1, 0, 1, 'water'));
+// voxelTree.insert(new Voxel(1, -1, 1, 1, 'water'));
+// voxelTree.insert(new Voxel(-1, 1, -1, 1, 'water'));
+// voxelTree.insert(new Voxel(1, 0, 1, 1, 'water'));
+// voxelTree.insert(new Voxel(-1, 0, -1, 1));
+// voxelTree.insert(new Voxel(0, -1, 0, 1));
+// voxelTree.insert(new Voxel(2, 2, 2, 1));
+// voxelTree.insert(new Voxel(-2, -2, -2, 1));
+// voxelTree.insert(new Voxel(2, 2, -2, 1));
+// voxelTree.insert(new Voxel(-2, -2, 2, 1));
 
 // Generate voxel meshes
 generateVoxelMeshes(voxelTree, scene);

@@ -56,7 +56,7 @@ function generateVoxelMeshes(voxelTree, scene) {
                 material.diffuseTexture = new BABYLON.Texture("textures/water.jpg", scene);
                 break;
             case 'tree':
-                material.diffuseTexture = new BABYLON.Texture("textures/type2.jpg", scene);
+                material.diffuseTexture = new BABYLON.Texture("textures/tree.jpeg", scene);
                 break;
             // Add more cases as needed
             default:
